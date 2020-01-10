@@ -609,6 +609,9 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
   }
 
   public long getCurrentPosition() {
+    if (isCompleted()) {
+      return mMediaPlayer.getDuration();
+    }
     if (isInPlaybackState())
       return mMediaPlayer.getCurrentPosition();
     return 0;
@@ -752,5 +755,10 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
 
   protected boolean isInPlaybackState() {
     return (mMediaPlayer != null && mCurrentState != STATE_ERROR && mCurrentState != STATE_IDLE && mCurrentState != STATE_PREPARING);
+  }
+
+  @Override
+  public boolean isCompleted() {
+    return mMediaPlayer != null && mCurrentState == STATE_PLAYBACK_COMPLETED;
   }
 }
